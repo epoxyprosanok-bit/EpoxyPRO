@@ -1,568 +1,986 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posadzki Żywiczne Sanok | Żywica Epoksydowa Krosno | Blaty Epoksydowe – EpoxyPRO</title>
-    <!-- Ładowanie Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Ładowanie Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #ffd700; /* Złoty akcent */
-            --secondary-color: #1a1a1a; /* Głęboka czerń */
-            --text-color: #f0f0f0;
-            --neon-glow: 0 0 8px var(--primary-color), 0 0 12px var(--primary-color);
-        }
+import React, { useState, useEffect } from 'react';
+import { Menu, X, ChevronDown, Phone, Mail, MapPin, Award, Users, Shield, Clock, TrendingUp, Zap, CheckCircle, Star, ChevronLeft, ChevronRight, Search, Plus, Minus } from 'lucide-react';
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            overflow-x: hidden;
-        }
+const EpoxyProLanding = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('Wszystkie');
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+  const [expandedFaq, setExpandedFaq] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    projectType: '',
+    surface: '',
+    message: ''
+  });
 
-        /* Styl dla sekcji Hero */
-        #hero-section {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-        /* Warstwa tła Hero */
-        #hero-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            
-            /* Tło Hero - Pełny identyfikator */
-            /* Zostawiamy pełny identyfikator tylko dla tła Hero, ponieważ to często wymaga specjalnego mapowania */
-            background-image: url('Gemini_Generated_Image_tfcjmdtfcjmdtfcj.jpg-c36dd0e2-279c-4483-8c07-e20d8172800a');
-            
-            background-size: cover;
-            background-position: center;
-            /* Filtry i ciemne overlay */
-            filter: brightness(0.7) contrast(1.2);
-            opacity: 0.8;
-            transform: scale(1.05);
-            z-index: 1;
-            /* Dodatkowy ciemny overlay */
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
-        }
+  const portfolioItems = [
+    {
+      id: 1,
+      title: "Loft Industrialny - Sanok",
+      category: "Dekoracyjne",
+      type: "Posadzka epoksydowa 3D z efektem metalicznym",
+      surface: "120 m²",
+      tech: "Self-leveling epoxy z pigmentami metalicznymi",
+      image: "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)"
+    },
+    {
+      id: 2,
+      title: "Hala Produkcyjna - Krosno",
+      category: "Przemysłowe",
+      type: "Posadzka poliuretanowo-cementowa",
+      surface: "850 m²",
+      tech: "PU-cement screed system",
+      image: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+    },
+    {
+      id: 3,
+      title: "Salon Beauty - Rzeszów",
+      category: "Dekoracyjne",
+      type: "Epoxy 3D Metallic - Rose Gold",
+      surface: "65 m²",
+      tech: "Multilayer z pigmentami metalicznymi",
+      image: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+    },
+    {
+      id: 4,
+      title: "Garaż Premium - Sanok",
+      category: "Mieszkalne",
+      type: "Epoxy Anti-slip",
+      surface: "45 m²",
+      tech: "Quartz broadcast system R11",
+      image: "linear-gradient(135deg, #4facfe 0%, #667eea 100%)"
+    },
+    {
+      id: 5,
+      title: "Magazyn Logistyczny - Brzozów",
+      category: "Przemysłowe",
+      type: "Heavy-duty epoxy coating",
+      surface: "1200 m²",
+      tech: "3-layer industrial system",
+      image: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+    },
+    {
+      id: 6,
+      title: "Restauracja - Lesko",
+      category: "Dekoracyjne",
+      type: "Epoxy 3D z efektem marmuru",
+      surface: "180 m²",
+      tech: "Artistic multilayer technique",
+      image: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
+    }
+  ];
 
-        .content-container {
-            position: relative;
-            z-index: 2;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  const technologies = [
+    {
+      title: "Systemy Epoksydowe",
+      items: [
+        {
+          name: "Epoxy Self-Leveling",
+          thickness: "2-5 mm",
+          use: "Showroomy, biura, przestrzenie komercyjne",
+          features: "Efekt lustrzany, brak spoin, higieniczność",
+          strength: "≥45 N/mm²"
+        },
+        {
+          name: "Epoxy 3D Metallic",
+          thickness: "3-6 mm",
+          use: "Boutiki, restauracje, rezydencje premium",
+          features: "Głębia 3D, metaliczne fale, unikalne wzory",
+          strength: "Multilayer technology"
+        },
+        {
+          name: "Epoxy Industrial Coating",
+          thickness: "3-8 mm",
+          use: "Hale, magazyny, zakłady produkcyjne",
+          features: "Odporność chemiczna (kwasy, zasady, rozpuszczalniki)",
+          strength: "DIN EN 1504-2"
         }
+      ]
+    },
+    {
+      title: "Systemy Poliuretanowe",
+      items: [
+        {
+          name: "Polyurethane Screed (PU-cement)",
+          thickness: "6-12 mm",
+          use: "Przemysł spożywczy, chłodnie, kuchnie",
+          features: "Elastyczność, odporność termiczna (-40°C do +120°C)",
+          strength: "Extreme durability"
+        },
+        {
+          name: "Polyurethane Coating",
+          thickness: "1-3 mm",
+          use: "Parkingi, tarasy, balkony",
+          features: "Anti-slip, UV-stable, elastic",
+          strength: "Weather resistant"
+        }
+      ]
+    },
+    {
+      title: "Systemy Specjalistyczne",
+      items: [
+        {
+          name: "ESD Floors",
+          thickness: "2-4 mm",
+          use: "Laboratoria, elektronika, IT",
+          features: "Elektrostatycznie rozpraszające",
+          strength: "EN 61340-5-1"
+        },
+        {
+          name: "Quartz Broadcast Systems",
+          thickness: "4-8 mm",
+          use: "Rampy, wejścia, strefy mokre",
+          features: "Anti-slip R10-R13, Epoxy + kwarcowy broadcast",
+          strength: "High traction"
+        },
+        {
+          name: "PMMA Fast-Cure Systems",
+          thickness: "2-5 mm",
+          use: "Projekty ekspresowe, remonty w działających obiektach",
+          features: "Czas utwardzania: 2-3 godziny",
+          strength: "Quick turnaround"
+        }
+      ]
+    }
+  ];
 
-        /* Efekt LED dla H1 */
-        .neon-h1 {
-            text-shadow: var(--neon-glow);
-            color: var(--text-color);
-            line-height: 1.1;
-        }
+  const testimonials = [
+    {
+      name: "Marek K.",
+      position: "Dyrektor Produkcji",
+      company: "Zakłady Metalowe, Krosno",
+      text: "Posadzka w naszej hali produkcyjnej wytrzymuje codzienne obciążenia od 6 lat bez najmniejszych oznak zużycia. EpoxyPRO to profesjonalizm na najwyższym poziomie.",
+      rating: 5
+    },
+    {
+      name: "Anna W.",
+      position: "Właścicielka",
+      company: "Beauty Salon, Rzeszów",
+      text: "Efekt 3D metallic przekroczył nasze oczekiwania. Klienci są zachwyceni posadzką, a my cieszymy się łatwością utrzymania czystości. Polecam!",
+      rating: 5
+    },
+    {
+      name: "Tomasz S.",
+      position: "Inwestor prywatny",
+      company: "Sanok",
+      text: "Garaż zmienił się nie do poznania. Posadzka epoksydowa nie tylko świetnie wygląda, ale jest też niesamowicie odporna. Najlepsza inwestycja w domu.",
+      rating: 5
+    }
+  ];
 
-        /* Efekt LED/3D dla przycisków CTA */
-        .cta-button {
-            border: 2px solid var(--primary-color);
-            box-shadow: var(--neon-glow);
-            transition: all 0.3s ease;
-        }
+  const processSteps = [
+    {
+      number: "01",
+      title: "Konsultacja & Audyt",
+      desc: "Bezpłatna wizja lokalna, analiza podłoża, dobór optymalnego systemu",
+      time: "1-2 dni",
+      icon: <Search className="w-8 h-8" />
+    },
+    {
+      number: "02",
+      title: "Wycena & Projekt",
+      desc: "Szczegółowa kalkulacja, wizualizacje 3D, próbki kolorów",
+      time: "2-3 dni",
+      icon: <TrendingUp className="w-8 h-8" />
+    },
+    {
+      number: "03",
+      title: "Przygotowanie Podłoża",
+      desc: "Szlifowanie, frezowanie, naprawa ubytków, gruntowanie",
+      time: "1-3 dni",
+      icon: <Zap className="w-8 h-8" />
+    },
+    {
+      number: "04",
+      title: "Aplikacja Systemu",
+      desc: "Profesjonalna aplikacja z kontrolą warunków środowiskowych",
+      time: "1-4 dni",
+      icon: <Award className="w-8 h-8" />
+    },
+    {
+      number: "05",
+      title: "Curing & Odbiór",
+      desc: "Kontrolowane utwardzanie, testy jakości, gwarancja",
+      time: "24-72h",
+      icon: <CheckCircle className="w-8 h-8" />
+    }
+  ];
 
-        .cta-button:hover {
-            background-color: var(--primary-color);
-            color: var(--secondary-color);
-            box-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--primary-color);
-            transform: translateY(-2px);
-        }
+  const benefits = [
+    {
+      icon: <Award className="w-10 h-10" />,
+      title: "Certyfikowane Materiały",
+      desc: "Współpracujemy wyłącznie z liderami branży: Sika, BASF, Remmers, Epodex. Każdy materiał z certyfikatem zgodności EU."
+    },
+    {
+      icon: <Shield className="w-10 h-10" />,
+      title: "Gwarancja do 10 lat",
+      desc: "Na systemy przemysłowe – 10 lat, dekoracyjne – 5 lat. Gwarancja obejmuje pełną funkcjonalność i estetykę."
+    },
+    {
+      icon: <Users className="w-10 h-10" />,
+      title: "Doświadczony Zespół",
+      desc: "Aplikatorzy z międzynarodowymi certyfikatami, średnie doświadczenie 8+ lat w branży coating systems."
+    },
+    {
+      icon: <Zap className="w-10 h-10" />,
+      title: "Technologia Bez Kompromisów",
+      desc: "Kontrola wilgotności podłoża, temperatura aplikacji, czas otwarty – każdy parametr monitorowany."
+    },
+    {
+      icon: <TrendingUp className="w-10 h-10" />,
+      title: "Konkurencyjne Ceny",
+      desc: "Bezpośredni import materiałów, własny zespół – bez pośredników. Transparentna wycena bez ukrytych kosztów."
+    },
+    {
+      icon: <Clock className="w-10 h-10" />,
+      title: "Obsługa 360°",
+      desc: "Od projektu po serwis pogwarancyjny. Dostępność telefoniczna 24/7 dla klientów biznesowych."
+    }
+  ];
 
-        .service-card {
-            background-color: rgba(30, 30, 30, 0.85); /* Lekko przezroczyste tło */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
+  const faqs = [
+    {
+      q: "Ile kosztuje posadzka żywiczna w Sanoku?",
+      a: "Koszt zależy od typu systemu: posadzki dekoracyjne 150-400 zł/m², przemysłowe 120-280 zł/m². Wycena uwzględnia przygotowanie podłoża, materiały i robociznę. Oferujemy bezpłatną kalkulację po wizji lokalnej."
+    },
+    {
+      q: "Jak długo schnie żywica epoksydowa?",
+      a: "Systemy epoksydowe: czas żelowania 6-8h, pełna wytrzymałość mechaniczna po 5-7 dniach. Systemy PMMA: możliwość użytkowania już po 2-3 godzinach."
+    },
+    {
+      q: "Czy posadzka żywiczna nadaje się do domu?",
+      a: "Absolutnie! Posadzki epoksydowe 3D metallic to idealne rozwiązanie do salonów, kuchni, łazienek. Są hipoalergiczne, łatwe w utrzymaniu czystości i niezwykle trwałe."
+    },
+    {
+      q: "Jaki jest zasięg działania EpoxyPRO?",
+      a: "Obsługujemy powiaty: Sanocki, Bieszczadzki, Leski, Brzozowski, Krośnieński oraz miasta: Rzeszów, Przemyśl, Jasło. Dla dużych projektów możliwa realizacja w całej Polsce Południowej."
+    },
+    {
+      q: "Czy posadzki żywiczne są odporne na chemikalia?",
+      a: "Systemy przemysłowe epoxy i PU oferują odporność na kwasy, zasady, rozpuszczalniki organiczne, oleje i paliwa (zgodnie z normą EN 13529). Klasa odporności chemicznej do A4."
+    }
+  ];
 
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), var(--neon-glow);
-        }
+  const counties = [
+    "Powiat Sanocki (Sanok, Zagórz, Komańcza)",
+    "Powiat Bieszczadzki (Ustrzyki Dolne, Cisna, Lutowiska)",
+    "Powiat Leski (Lesko, Solina, Baligród)",
+    "Powiat Brzozowski (Brzozów, Domaradz)",
+    "Powiat Krośnieński (Krosno, Jedlicze, Rymanów)"
+  ];
 
-        /* Stylizacja filtrów Portfolio */
-        .filter-button.active {
-            color: var(--secondary-color);
-            background-color: var(--primary-color);
-            font-weight: 600;
-        }
-        .filter-button {
-            transition: all 0.2s;
-        }
-        /* Nowy styl dla sekcji Blaty */
-        #blaty-kuchenne {
-            background-color: #0d0d0d;
-        }
-        .blat-card {
-            background-color: #1a1a1a;
-            border-left: 4px solid var(--primary-color);
-            transition: background-color 0.3s;
-        }
-        .blat-card:hover {
-            background-color: #2a2a2a;
-        }
-    </style>
-</head>
-<body class="antialiased">
+  const filteredPortfolio = activeFilter === 'Wszystkie' 
+    ? portfolioItems 
+    : portfolioItems.filter(item => item.category === activeFilter);
 
-    <!-- Nagłówek i Nawigacja -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-secondary-color bg-opacity-90 backdrop-blur-sm p-4 border-b border-gray-800">
-        <nav class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-white tracking-widest">Epoxy<span class="text-yellow-500">PRO</span></a>
-            <div class="space-x-6 hidden md:flex text-sm font-medium">
-                <a href="#uslugi" class="hover:text-yellow-500 transition duration-200">Posadzki</a>
-                <a href="#blaty-kuchenne" class="hover:text-yellow-500 transition duration-200">Blaty</a>
-                <a href="#portfolio" class="hover:text-yellow-500 transition duration-200">Portfolio</a>
-                <a href="#onas" class="hover:text-yellow-500 transition duration-200">O Nas</a>
-                <a href="#kontakt" class="cta-button px-4 py-2 rounded-lg text-sm bg-transparent">Wycena Online</a>
+  const handleFormChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert('Dziękujemy za zapytanie! Skontaktujemy się w ciągu 2 godzin.');
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      projectType: '',
+      surface: '',
+      message: ''
+    });
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen">
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-gray-900/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center space-x-2">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center shadow-lg shadow-amber-500/50">
+                <span className="text-white font-bold text-xl">EP</span>
+              </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">EpoxyPRO</span>
             </div>
-            <!-- Menu mobilne (ikona) -->
-            <button class="md:hidden text-white" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                <i data-lucide="menu"></i>
+            
+            <div className="hidden md:flex space-x-8">
+              <a href="#portfolio" className="hover:text-amber-400 transition">Portfolio</a>
+              <a href="#o-nas" className="hover:text-amber-400 transition">O Nas</a>
+              <a href="#technologie" className="hover:text-amber-400 transition">Technologie</a>
+              <a href="#kontakt" className="hover:text-amber-400 transition">Kontakt</a>
+            </div>
+
+            <div className="hidden md:flex items-center space-x-4">
+              <a href="tel:+48518128618" className="flex items-center space-x-2 text-amber-400 hover:text-amber-300">
+                <Phone className="w-4 h-4" />
+                <span>518 128 618</span>
+              </a>
+            </div>
+
+            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden">
+              {menuOpen ? <X /> : <Menu />}
             </button>
-        </nav>
-        <!-- Menu mobilne (rozwijane) -->
-        <div id="mobile-menu" class="hidden md:hidden mt-3 text-center space-y-2">
-            <a href="#uslugi" class="block py-2 hover:text-yellow-500 transition duration-200">Posadzki</a>
-            <a href="#blaty-kuchenne" class="block py-2 hover:text-yellow-500 transition duration-200">Blaty</a>
-            <a href="#portfolio" class="block py-2 hover:text-yellow-500 transition duration-200">Portfolio</a>
-            <a href="#onas" class="block py-2 hover:text-yellow-500 transition duration-200">O Nas</a>
-            <a href="#kontakt" class="cta-button block py-2 rounded-lg text-sm bg-transparent mt-2">Wycena Online</a>
+          </div>
         </div>
-    </header>
 
-    <!-- SEKCJA 1: HERO -->
-    <section id="hero-section" class="text-center">
-        <!-- Tło Hero z pełnym identyfikatorem pliku -->
-        <div id="hero-background" class="absolute inset-0"></div>
-
-        <div class="content-container max-w-7xl mx-auto p-4 md:p-8">
-            <h1 class="neon-h1 text-4xl md:text-6xl font-extrabold mb-4 uppercase">
-                EpoxyPRO: Posadzki Żywiczne Premium | Sanok, Krosno, Blaty Epoksydowe
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 font-light text-gray-200">
-                Specjalizujemy się w estetyce dekoracyjnej i przemysłowej trwałości. Odkryj innowacyjne podłogi i blaty, które definiują jakość w Twoim powiecie.
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
-                <a href="#kontakt" class="cta-button px-10 py-4 rounded-xl text-lg font-bold uppercase transition duration-300 bg-black bg-opacity-40">
-                    ZAPYTANIE O WYCENĘ (Bezpłatna Konsultacja)
-                </a>
-                <a href="#portfolio" class="text-white hover:text-yellow-500 transition duration-300 px-10 py-4 text-lg font-medium border border-gray-700 rounded-xl bg-black bg-opacity-20">
-                    Zobacz Nasze Realizacje (Portfolio)
-                </a>
+        {menuOpen && (
+          <div className="md:hidden bg-gray-900 border-t border-gray-800">
+            <div className="px-4 py-6 space-y-4">
+              <a href="#portfolio" className="block hover:text-amber-400" onClick={() => setMenuOpen(false)}>Portfolio</a>
+              <a href="#o-nas" className="block hover:text-amber-400" onClick={() => setMenuOpen(false)}>O Nas</a>
+              <a href="#technologie" className="block hover:text-amber-400" onClick={() => setMenuOpen(false)}>Technologie</a>
+              <a href="#kontakt" className="block hover:text-amber-400" onClick={() => setMenuOpen(false)}>Kontakt</a>
+              <a href="tel:+48518128618" className="block text-amber-400">518 128 618</a>
             </div>
+          </div>
+        )}
+      </nav>
 
-            <!-- Wyróżniki z efektem LED -->
-            <div class="flex justify-center flex-wrap gap-x-8 gap-y-4 text-sm font-medium">
-                <div class="flex items-center space-x-2 text-yellow-400">
-                    <i data-lucide="timer" class="w-5 h-5" style="filter: drop-shadow(0 0 4px #ffd700);"></i>
-                    <span>Trwałość (25+ lat)</span>
-                </div>
-                <div class="flex items-center space-x-2 text-yellow-400">
-                    <i data-lucide="flask-conical" class="w-5 h-5" style="filter: drop-shadow(0 0 4px #ffd700);"></i>
-                    <span>Odporność chemiczna</span>
-                </div>
-                <div class="flex items-center space-x-2 text-yellow-400">
-                    <i data-lucide="map-pin" class="w-5 h-5" style="filter: drop-shadow(0 0 4px #ffd700);"></i>
-                    <span>Szybka realizacja (Sanok, Krosno, Lesko)</span>
-                </div>
-            </div>
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-pink-900/20 animate-pulse"></div>
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/30 rounded-full filter blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/30 rounded-full filter blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
         </div>
-    </section>
 
-    <!-- SEKCJA 2: USŁUGI I TECHNOLOGIE - POSADZKI -->
-    <section id="uslugi" class="py-20 md:py-32 bg-secondary-color">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-5xl font-bold mb-16 text-white">
-                Posadzki Żywiczne: Epoksyd vs. Poliuretan
-                <span class="block text-xl font-light text-gray-400 mt-2">(Podłogi przemysłowe Krosno, Posadzki dekoracyjne Bieszczady)</span>
-            </h2>
+        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+          <div className="mb-8 inline-block px-6 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
+            <span className="text-amber-400 font-semibold">Sanok | Bieszczady | Podkarpacie</span>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-amber-200 to-amber-400 bg-clip-text text-transparent leading-tight">
+            Posadzki Żywiczne<br />Nowej Generacji
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">
+            Trwałość przemysłu. Estetyka designu. Technologia przyszłości.
+          </p>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Karta B: Żywica Epoksydowa (Przemysł/Garaż) -->
-                <div class="service-card p-8 rounded-xl shadow-2xl">
-                    <div class="flex items-center justify-center mb-6">
-                        <i data-lucide="factory" class="w-12 h-12 text-yellow-500" style="filter: drop-shadow(0 0 6px #ffd700);"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4 text-white">Posadzki Przemysłowe i Garażowe (Maksymalna Twardość)</h3>
-                    <p class="text-gray-300 mb-4">Doskonała odporność na obciążenia mechaniczne, ścieranie i agresywne chemikalia (oleje, kwasy). Idealne do hal produkcyjnych, magazynów, warsztatów i parkingów.</p>
-                    <ul class="text-left text-sm text-gray-400 list-disc list-inside space-y-1 mt-4">
-                        <li>Samopoziomujące, grubowarstwowe systemy.</li>
-                        <li>Wysoka wytrzymałość na ściskanie.</li>
-                        <li>Kluczowe dla żywica epoksydowa Sanok.</li>
-                    </ul>
-                </div>
-
-                <!-- Karta B: Żywica Poliuretanowa (Dekoracyjne/Mieszkalne) -->
-                <div class="service-card p-8 rounded-xl shadow-2xl">
-                    <div class="flex items-center justify-center mb-6">
-                        <i data-lucide="flower-2" class="w-12 h-12 text-yellow-500" style="filter: drop-shadow(0 0 6px #ffd700);"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4 text-white">Posadzki Dekoracyjne i Mieszkalne (Elastyczność i Estetyka)</h3>
-                    <p class="text-gray-300 mb-4">Wysoka elastyczność (redukcja pęknięć), komfort akustyczny i cieplny. Świetne do salonów, łazienek, biur. Pozwala na uzyskanie efektów 3D, marmuru, brokatu.</p>
-                    <ul class="text-left text-sm text-gray-400 list-disc list-inside space-y-1 mt-4">
-                        <li>Odporność na promieniowanie UV (brak żółknięcia).</li>
-                        <li>Elastyczność mierzona skalą Shore D.</li>
-                        <li>Idealne dla posadzki poliuretanowe Bieszczady.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <a href="#kontakt" class="cta-button mt-12 inline-block px-8 py-3 rounded-lg text-base font-medium uppercase bg-transparent">
-                Porozmawiajmy o Technologii
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#kontakt" className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 rounded-lg font-semibold text-lg shadow-lg shadow-amber-500/50 hover:shadow-amber-500/70 hover:scale-105 transition-all duration-300">
+              Bezpłatna Wycena
+              <ChevronDown className="inline-block ml-2 group-hover:translate-y-1 transition-transform" />
             </a>
-        </div>
-    </section>
-
-    <!-- SEKCJA: BLATY KUCHENNE I ŁAZIENKOWE (EPOKSYDOWE) -->
-    <section id="blaty-kuchenne" class="py-20 md:py-32" style="background-color: #0d0d0d;">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">
-                Blaty Epoksydowe: Indywidualny Design Kuchni
-            </h2>
-            <p class="text-xl text-gray-400 mb-16">
-                Unikalny element dekoracyjny o nieporównywalnej wytrzymałości. Blaty kuchenne na wymiar.
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-left">
-                <!-- Opis Blatów -->
-                <div class="space-y-6">
-                    <div class="blat-card p-6 rounded-xl shadow-lg">
-                        <h3 class="flex items-center text-2xl font-semibold text-yellow-500 mb-3">
-                             <i data-lucide="droplet" class="w-6 h-6 mr-3"></i> 100% Wodoodporności
-                        </h3>
-                        <p class="text-gray-300">Blaty epoksydowe są w pełni nienasiąkliwe i odporne na wilgoć, co czyni je idealnym materiałem do kuchni i łazienek. Bez spoin, bez plam.</p>
-                    </div>
-                    <div class="blat-card p-6 rounded-xl shadow-lg">
-                        <h3 class="flex items-center text-2xl font-semibold text-yellow-500 mb-3">
-                             <i data-lucide="palette" class="w-6 h-6 mr-3"></i> Estetyka Rzeki i Marmuru
-                        </h3>
-                        <p class="text-gray-300">Możliwość tworzenia niestandardowych efektów 3D, "River Table", imitacji marmuru, granitu i innych minerałów. Każdy blat jest dziełem sztuki.</p>
-                    </div>
-                    <div class="blat-card p-6 rounded-xl shadow-lg">
-                        <h3 class="flex items-center text-2xl font-semibold text-yellow-500 mb-3">
-                             <i data-lucide="gauge" class="w-6 h-6 mr-3"></i> Powierzchnia Ultra-Twarda
-                        </h3>
-                        <p class="text-gray-300">Po utwardzeniu żywica epoksydowa jest odporna na zarysowania, wysoką temperaturę i codzienne użytkowanie, przewyższając laminaty i niektóre kamienie.</p>
-                    </div>
-                </div>
-
-                <!-- Zdjęcie Blatu Epoksydowego - POPRAWIONA ŚCIEŻKA -->
-                <div class="rounded-xl overflow-hidden shadow-2xl">
-                    <img 
-                        src="Gemini_Generated_Image_smejhhsmejhhsmej.jpg" 
-                        alt="Blat kuchenny z żywicy epoksydowej czarno-złoty" 
-                        class="w-full h-full object-cover max-h-[500px]"
-                        onerror="this.onerror=null; this.src='https://placehold.co/600x400/1A1A1A/FFD700?text=B%C5%81%C4%84D%20LADOWANIA%20ZDJ%C4%98CIA'; console.error('Nie udało się załadować zdjęcia blatu epoksydowego.');"
-                    >
-                </div>
-            </div>
-
-            <a href="#kontakt" class="cta-button mt-12 inline-block px-8 py-3 rounded-lg text-base font-medium uppercase bg-transparent">
-                Zamów Indywidualny Blat
+            <a href="#portfolio" className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg font-semibold text-lg hover:bg-white/20 transition-all duration-300">
+              Zobacz Realizacje
             </a>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="p-6 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+              <div className="text-4xl font-bold text-amber-400 mb-2">5000+</div>
+              <div className="text-gray-400">m² zrealizowanych</div>
+            </div>
+            <div className="p-6 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+              <div className="text-4xl font-bold text-amber-400 mb-2">200+</div>
+              <div className="text-gray-400">zadowolonych klientów</div>
+            </div>
+            <div className="p-6 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+              <div className="text-4xl font-bold text-amber-400 mb-2">10 lat</div>
+              <div className="text-gray-400">gwarancji</div>
+            </div>
+          </div>
         </div>
-    </section>
-    <!-- KONIEC NOWEJ SEKCJI -->
 
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <ChevronDown className="w-8 h-8 text-amber-400" />
+        </div>
+      </section>
 
-    <!-- SEKCJA 3: PORTFOLIO (Wizualna Weryfikacja Jakości) -->
-    <section id="portfolio" class="py-20 md:py-32 bg-gray-900 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white text-center">
-                Nasze Realizacje: Trwałość i Styl
+      {/* Portfolio Section */}
+      <section id="portfolio" className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              Nasze Realizacje
             </h2>
-            <p class="text-xl text-center mb-16 text-gray-400">
-                Dowody na to, że jakość posadzek żywicznych w Powiecie Sanockim i okolicach może być premium.
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Każdy projekt to unikalne połączenie technologii i sztuki
             </p>
+          </div>
 
-            <!-- Filtry -->
-            <div class="flex justify-center space-x-3 mb-12 flex-wrap gap-2">
-                <button class="filter-button px-4 py-2 rounded-full text-sm font-medium bg-gray-700 text-gray-200 active" data-filter="all">Wszystkie</button>
-                <button class="filter-button px-4 py-2 rounded-full text-sm font-medium bg-gray-700 text-gray-200" data-filter="dekoracyjne">Posadzki Dekoracyjne</button>
-                <button class="filter-button px-4 py-2 rounded-full text-sm font-medium bg-gray-700 text-gray-200" data-filter="przemyslowe">Posadzki Przemysłowe</button>
-                <button class="filter-button px-4 py-2 rounded-full text-sm font-medium bg-gray-700 text-gray-200" data-filter="blaty">Blaty Epoksydowe</button>
-            </div>
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {['Wszystkie', 'Dekoracyjne', 'Przemysłowe', 'Mieszkalne'].map(filter => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                  activeFilter === filter
+                    ? 'bg-gradient-to-r from-amber-500 to-orange-600 shadow-lg shadow-amber-500/50'
+                    : 'bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10'
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
 
-            <!-- Galeria Masonry (nierówna siatka) -->
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="portfolio-grid">
-                
-                <!-- Projekt 8: NOWY BLAT KUCHENNY - POPRAWIONA ŚCIEŻKA -->
-                 <div class="portfolio-item blaty">
-                    <figure class="relative overflow-hidden rounded-lg group">
-                        <img 
-                            src="Gemini_Generated_Image_smejhhsmejhhsmej.jpg" 
-                            alt="Blat kuchenny z żywicy epoksydowej czarno-złoty" 
-                            class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105"
-                            onerror="this.onerror=null; this.src='https://placehold.co/400x300/1A1A1A/FFD700?text=B%C5%81%C4%84D%20LADOWANIA%20ZDJ%C4%98CIA';"
-                        >
-                        <figcaption class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition duration-300">
-                            <h4 class="text-xl font-bold text-white">Czarno-Złoty Blat</h4>
-                            <p class="text-sm text-yellow-400">Typ: Blat Epoksydowy (Black Marble Gold)</p>
-                            <p class="text-xs text-gray-300">Zastosowanie: Kuchnia mieszkalna. Lokalizacja: Krosno/Sanok.</p>
-                        </figcaption>
-                    </figure>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredPortfolio.map(item => (
+              <div key={item.id} className="group cursor-pointer">
+                <div className="relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-500 hover:scale-105 hover:shadow-amber-500/30">
+                  <div 
+                    className="h-80 w-full"
+                    style={{background: item.image}}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                  </div>
+                  
+                  <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-300">
+                    <div className="mb-2">
+                      <span className="px-3 py-1 bg-amber-500/80 backdrop-blur-sm rounded-full text-xs font-semibold">
+                        {item.category}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
+                    <p className="text-gray-300 text-sm mb-3">{item.type}</p>
+                    <div className="flex items-center justify-between text-sm text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span>📐 {item.surface}</span>
+                    </div>
+                  </div>
                 </div>
-                
-                <!-- Projekt 1: Posadzka Dekoracyjna - Pełny identyfikator -->
-                <div class="portfolio-item dekoracyjne">
-                    <figure class="relative overflow-hidden rounded-lg group">
-                        <img src="Gemini_Generated_Image_fakv1lfakv1lfakv.jpg-20b7e898-bd4c-4e4a-a5c4-5c3bb6bffad3" alt="posadzka żywiczna dekoracyjna Sanok marmur" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
-                        <figcaption class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition duration-300">
-                            <h4 class="text-xl font-bold text-white">Rezydencja Sanok</h4>
-                            <p class="text-sm text-yellow-400">Typ: Posadzka Dekoracyjna (Efekt Marmuru)</p>
-                            <p class="text-xs text-gray-300">Zastosowanie: Salon. Lokalizacja: Sanok.</p>
-                        </figcaption>
-                    </figure>
-                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                <!-- Projekt 2: Posadzka Przemysłowa - Pełny identyfikator -->
-                <div class="portfolio-item przemyslowe">
-                    <figure class="relative overflow-hidden rounded-lg group">
-                        <img src="watuwzd4qtbupt7pcgskb6stk0arctmndzu0nv7x-1750160911.jpg-d2eded30-2721-49ae-b221-503f279a4863" alt="podłoga epoksydowa przemysłowa Krosno realizacja magazyn" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
-                        <figcaption class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition duration-300">
-                            <h4 class="text-xl font-bold text-white">Hala Logistyczna</h4>
-                            <p class="text-sm text-yellow-400">Typ: Posadzka Epoksydowa (Samopoziomująca, RAL 7040)</p>
-                            <p class="text-xs text-gray-300">Zastosowanie: Magazyn High-Bay. Lokalizacja: Krosno.</p>
-                        </figcaption>
-                    </figure>
-                </div>
-
-                <!-- Projekt 3: Posadzka Dekoracyjna - Pełny identyfikator -->
-                <div class="portfolio-item dekoracyjne">
-                    <figure class="relative overflow-hidden rounded-lg group">
-                        <img src="Gemini_Generated_Image_t8hw9mt8hw9mt8hw.jpg-9514490d-2755-40ca-89ce-24ff15a528f3" alt="posadzka dekoracyjna z brokatem mieszkaniowa" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
-                        <figcaption class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition duration-300">
-                            <h4 class="text-xl font-bold text-white">Apartament Bieszczady</h4>
-                            <p class="text-sm text-yellow-400">Typ: Posadzka Poliuretanowa z Brokatem</p>
-                            <p class="text-xs text-gray-300">Zastosowanie: Salon. Lokalizacja: Ustrzyki Dolne (Bieszczady).</p>
-                        </figcaption>
-                    </figure>
-                </div>
-
-                <!-- Projekt 4: Posadzka Przemysłowa - Pełny identyfikator -->
-                <div class="portfolio-item przemyslowe">
-                    <figure class="relative overflow-hidden rounded-lg group">
-                        <img src="IMG_0787.jpg-9c335017-60a9-4291-8725-301351138d20" alt="podłoga epoksydowa garażowa Sanok" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
-                        <figcaption class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition duration-300">
-                            <h4 class="text-xl font-bold text-white">Garaż Komercyjny</h4>
-                            <p class="text-sm text-yellow-400">Typ: Posadzka Epoksydowa Żywiczna (System Kwarcowy)</p>
-                            <p class="text-xs text-gray-300">Zastosowanie: Garaż. Lokalizacja: Brzozów.</p>
-                        </figcaption>
-                    </figure>
-                </div>
-
-                <!-- Projekt 5: Posadzka Dekoracyjna - Pełny identyfikator -->
-                <div class="portfolio-item dekoracyjne">
-                    <figure class="relative overflow-hidden rounded-lg group">
-                        <img src="IMG_0784.jpg-10be32e0-c44f-4116-8407-ef040758ecf9" alt="posadzka dekoracyjna w łazience żywiczna" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
-                        <figcaption class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition duration-300">
-                            <h4 class="text-xl font-bold text-white">Łazienka Premium</h4>
-                            <p class="text-sm text-yellow-400">Typ: Posadzka Dekoracyjna 3D</p>
-                            <p class="text-xs text-gray-300">Zastosowanie: Łazienka. Lokalizacja: Lesko.</p>
-                        </figcaption>
-                    </figure>
-                </div>
-
-                 <!-- Projekt 6: Posadzka Przemysłowa - Pełny identyfikator -->
-                <div class="portfolio-item przemyslowe">
-                    <figure class="relative overflow-hidden rounded-lg group">
-                        <img src="Gemini_Generated_Image_7yc8kr7yc8kr7yc8.jpg-b9530643-553e-4fce-8013-4972f783cc11" alt="posadzka epoksydowa antystatyczna przemysł" class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
-                        <figcaption class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition duration-300">
-                            <h4 class="text-xl font-bold text-white">Warsztat Precyzyjny</h4>
-                            <p class="text-sm text-yellow-400">Typ: Posadzka Epoksydowa Antystatyczna</p>
-                            <p class="text-xs text-gray-300">Zastosowanie: Hala Produkcyjna. Lokalizacja: Powiat Krośnieński.</p>
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-        </section>
-
-    <!-- SEKCJA 4: O NAS (Budowanie Zaufania i Lokalność) -->
-    <section id="onas" class="py-20 md:py-32 bg-secondary-color border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">
-                Lokalny Ekspert z Pasją: EpoxyPRO Sanok
-            </h2>
-            <p class="text-xl text-gray-400 mb-16">
-                Fundament Trwałości i Estetyki, bazujący na najlepszych, sprawdzonych technologiach.
-            </p>
-
-            <!-- Misja i Wartości -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                <div class="p-6 rounded-xl bg-gray-900 border border-yellow-500/30">
-                    <i data-lucide="compass" class="w-10 h-10 text-yellow-500 mx-auto mb-4" style="filter: drop-shadow(0 0 4px #ffd700);"></i>
-                    <h3 class="text-xl font-semibold text-white mb-2">Precyzja</h3>
-                    <p class="text-gray-400 text-sm">Absolutna dokładność w przygotowaniu podłoża i aplikacji. Żadnych kompromisów, tylko rzemiosło na najwyższym poziomie.</p>
-                </div>
-                <div class="p-6 rounded-xl bg-gray-900 border border-yellow-500/30">
-                    <i data-lucide="lightbulb" class="w-10 h-10 text-yellow-500 mx-auto mb-4" style="filter: drop-shadow(0 0 4px #ffd700);"></i>
-                    <h3 class="text-xl font-semibold text-white mb-2">Innowacja</h3>
-                    <p class="text-gray-400 text-sm">Korzystamy z nowoczesnych systemów żywicznych (samopoziomujące, 3D), czerpiąc inspiracje z Europy Zachodniej, dostosowując je do lokalnego rynku.</p>
-                </div>
-                <div class="p-6 rounded-xl bg-gray-900 border border-yellow-500/30">
-                    <i data-lucide="map" class="w-10 h-10 text-yellow-500 mx-auto mb-4" style="filter: drop-shadow(0 0 4px #ffd700);"></i>
-                    <h3 class="text-xl font-semibold text-white mb-2">Lokalność</h3>
-                    <p class="text-gray-400 text-sm">Jesteśmy z Sanoka, znamy regionalne potrzeby. To nasza baza, stąd budujemy trwałe relacje i podłogi na lata.</p>
-                </div>
-            </div>
-
-            <!-- Lokalny Zasięg (BOOSTER SEO) -->
-            <div class="max-w-4xl mx-auto p-6 bg-gray-800 rounded-xl border border-gray-700">
-                <h3 class="text-2xl font-semibold text-white mb-4">Obszar Działania: Twoja Posadzka/Blat, Nasza Specjalność</h3>
-                <p class="text-lg text-gray-300">
-                    Działamy lokalnie, gwarantując szybki czas reakcji i realizacji. Nasze główne obszary to:
+      {/* About Section */}
+      <section id="o-nas" className="py-24 px-4 bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-block px-4 py-2 bg-amber-500/20 rounded-full mb-6">
+                <span className="text-amber-400 font-semibold">O Firmie</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                Mistrzowie Posadzek Żywicznych od 2018
+              </h2>
+              
+              <div className="space-y-6 text-gray-300 text-lg mb-8">
+                <p>
+                  W EpoxyPRO łączymy szwajcarską precyzję z polską determinacją. Każda posadzka to dla nas dzieło – od pierwszego kontaktu z klientem, przez dobór optymalnej technologii, aż po finalne curing i odbiór.
                 </p>
-                <div class="flex flex-wrap justify-center gap-4 mt-4 text-center">
-                    <span class="px-4 py-1 bg-yellow-600 rounded-full text-sm font-bold text-black shadow-lg">Powiat Sanocki (BAZA)</span>
-                    <span class="px-4 py-1 bg-gray-700 rounded-full text-sm font-medium text-yellow-400">Powiat Krośnieński (Podłogi Przemysłowe Krosno)</span>
-                    <span class="px-4 py-1 bg-gray-700 rounded-full text-sm font-medium text-yellow-400">Powiat Bieszczadzki (Posadzki Żywiczne Bieszczady)</span>
-                    <span class="px-4 py-1 bg-gray-700 rounded-full text-sm font-medium text-yellow-400">Powiat Leski</span>
-                    <span class="px-4 py-1 bg-gray-700 rounded-full text-sm font-medium text-yellow-400">Powiat Brzozowski</span>
+                <p>
+                  Specjalizujemy się w systemach epoksydowych i poliuretanowych najnowszej generacji, które spełniają najbardziej rygorystyczne normy europejskie (DIN EN 13813, EN 1504).
+                </p>
+                <p className="font-semibold text-amber-400">
+                  Nasza misja? Dostarczać posadzki, które łączą niezawodność przemysłową z bezkompromisową estetyką. Posadzki, które służą dekady, nie lata.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4 mb-8">
+                <div className="text-center p-4 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+                  <Award className="w-8 h-8 mx-auto mb-2 text-amber-400" />
+                  <div className="text-sm text-gray-400">Certyfikowane<br />Technologie</div>
                 </div>
+                <div className="text-center p-4 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+                  <Users className="w-8 h-8 mx-auto mb-2 text-amber-400" />
+                  <div className="text-sm text-gray-400">Doświadczony<br />Zespół</div>
+                </div>
+                <div className="text-center p-4 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+                  <MapPin className="w-8 h-8 mx-auto mb-2 text-amber-400" />
+                  <div className="text-sm text-gray-400">#1 w<br />Podkarpaciu</div>
+                </div>
+              </div>
             </div>
-        </div>
-    </section>
 
-    <!-- SEKCJA 5: CTA I KONTAKT -->
-    <section id="kontakt" class="py-20 md:py-32 bg-gray-900 border-t border-gray-800">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white text-center">
-                Zacznij Projekt Już Dziś – Zapytaj o Wycenę
-            </h2>
-            <p class="text-xl text-center mb-10 text-gray-400">
-                Skontaktuj się z nami. Odpowiadamy i przedstawiamy wstępną kalkulację w ciągu 24 godzin.
-            </p>
-
-            <!-- Formularz Kontaktowy -->
-            <form action="#" method="POST" class="p-8 md:p-12 rounded-2xl bg-gray-800 border border-yellow-500/40 shadow-xl">
-                <div class="space-y-6">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Imię i Nazwisko</label>
-                        <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-yellow-500 focus:border-yellow-500 text-white">
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Telefon</label>
-                            <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-yellow-500 focus:border-yellow-500 text-white">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">E-mail</label>
-                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-yellow-500 focus:border-yellow-500 text-white">
-                        </div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-3xl transform rotate-3"></div>
+              <div className="relative bg-gradient-to-br from-purple-600 to-blue-600 rounded-3xl p-8 shadow-2xl">
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
+                      <span className="text-3xl">📊</span>
                     </div>
                     <div>
-                        <label for="location" class="block text-sm font-medium text-gray-300 mb-2">Powiat / Lokalizacja Projektu</label>
-                        <select id="location" name="location" required class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-yellow-500 focus:border-yellow-500 text-white">
-                            <option value="">Wybierz...</option>
-                            <option value="Sanocki">Powiat Sanocki</option>
-                            <option value="Krosnienski">Powiat Krośnieński</option>
-                            <option value="Bieszczadzki">Powiat Bieszczadzki</option>
-                            <option value="Leski">Powiat Leski</option>
-                            <option value="Brzozowski">Powiat Brzozowski</option>
-                            <option value="inny">Inny (proszę opisać)</option>
-                        </select>
+                      <div className="text-3xl font-bold">2018</div>
+                      <div className="text-gray-200">Rok założenia</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
+                      <span className="text-3xl">🏆</span>
                     </div>
                     <div>
-                        <label for="details" class="block text-sm font-medium text-gray-300 mb-2">Opis Projektu (Posadzka / Blat, zastosowanie, m²)</label>
-                        <textarea id="details" name="details" rows="4" required class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-yellow-500 focus:border-yellow-500 text-white"></textarea>
+                      <div className="text-3xl font-bold">5000+</div>
+                      <div className="text-gray-200">m² zrealizowanych</div>
                     </div>
-                    <button type="submit" class="cta-button w-full px-4 py-3 rounded-xl text-lg font-bold uppercase mt-4">
-                        Wyślij Zapytanie o Wycenę
-                    </button>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
+                      <span className="text-3xl">😊</span>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold">200+</div>
+                      <div className="text-gray-200">Zadowolonych klientów</div>
+                    </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Technologies Section */}
+      <section id="technologie" className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              Technologie & Systemy Żywiczne
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Najnowocześniejsze rozwiązania dla Twojego projektu
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {technologies.map((tech, idx) => (
+              <div key={idx} className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-amber-500/20 hover:border-amber-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/20">
+                <h3 className="text-2xl font-bold mb-6 text-amber-400">{tech.title}</h3>
+                <div className="space-y-6">
+                  {tech.items.map((item, i) => (
+                    <div key={i} className="border-l-2 border-amber-500/30 pl-4">
+                      <h4 className="font-bold text-lg mb-2">{item.name}</h4>
+                      <div className="space-y-1 text-sm text-gray-400">
+                        <p><span className="text-amber-400">Grubość:</span> {item.thickness}</p>
+                        <p><span className="text-amber-400">Zastosowanie:</span> {item.use}</p>
+                        <p><span className="text-amber-400">Właściwości:</span> {item.features}</p>
+                        <p><span className="text-amber-400">Standard:</span> {item.strength}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="py-24 px-4 bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              Proces Realizacji
+            </h2>
+            <p className="text-xl text-gray-400">
+              5 kroków do perfekcyjnej posadzki
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            {processSteps.map((step, idx) => (
+              <div key={idx} className="relative">
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-amber-500/50 transition-all duration-300 h-full">
+                  <div className="text-6xl font-bold text-amber-500/20 mb-4">{step.number}</div>
+                  <div className="text-amber-400 mb-4">{step.icon}</div>
+                  <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                  <p className="text-gray-400 text-sm mb-4">{step.desc}</p>
+                  <div className="inline-block px-3 py-1 bg-amber-500/20 rounded-full text-xs text-amber-400">
+                    {step.time}
+                  </div>
+                </div>
+                {idx < processSteps.length - 1 && (
+                  <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2">
+                    <ChevronRight className="text-amber-500/50" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              Dlaczego EpoxyPRO?
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {benefits.map((benefit, idx) => (
+              <div key={idx} className="group p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-white/10 hover:border-amber-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-105">
+                <div className="text-amber-400 mb-4 group-hover:scale-110 transition-transform">
+                  {benefit.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-3">{benefit.title}</h3>
+                <p className="text-gray-400">{benefit.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-24 px-4 bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              Co Mówią Nasi Klienci
+            </h2>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 md:p-12 border border-amber-500/20 shadow-2xl">
+              <div className="flex justify-center mb-6">
+                {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
+                  <Star key={i} className="w-6 h-6 text-amber-400 fill-amber-400" />
+                ))}
+              </div>
+              <p className="text-xl md:text-2xl text-gray-300 mb-8 italic text-center">
+                "{testimonials[currentTestimonial].text}"
+              </p>
+              <div className="text-center">
+                <p className="font-bold text-lg">{testimonials[currentTestimonial].name}</p>
+                <p className="text-gray-400">{testimonials[currentTestimonial].position}</p>
+                <p className="text-amber-400">{testimonials[currentTestimonial].company}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-center mt-8 space-x-4">
+              <button
+                onClick={() => setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
+                className="p-3 bg-white/10 backdrop-blur-md rounded-full hover:bg-amber-500/20 transition"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)}
+                className="p-3 bg-white/10 backdrop-blur-md rounded-full hover:bg-amber-500/20 transition"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Area Section */}
+      <section className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              Obszar Działania
+            </h2>
+            <p className="text-xl text-gray-400">
+              Obsługujemy Podkarpacie i okolice
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-amber-500/20">
+              <h3 className="text-2xl font-bold mb-6 text-amber-400">Obsługiwane Powiaty</h3>
+              <div className="space-y-4">
+                {counties.map((county, idx) => (
+                  <div key={idx} className="flex items-start space-x-3">
+                    <CheckCircle className="w-6 h-6 text-amber-400 flex-shrink-0 mt-1" />
+                    <span className="text-gray-300">{county}</span>
+                  </div>
+                ))}
+                <div className="flex items-start space-x-3 pt-4 border-t border-white/10">
+                  <MapPin className="w-6 h-6 text-amber-400 flex-shrink-0 mt-1" />
+                  <span className="text-gray-300">Obsługujemy również: Rzeszów, Przemyśl, Jasło</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-8 shadow-2xl">
+              <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                <h3 className="text-2xl font-bold mb-4">Działamy w promieniu 100 km od Sanoka</h3>
+                <p className="text-gray-200 mb-6">
+                  Dla projektów powyżej 300 m² możliwa realizacja również w innych regionach Polski Południowej.
+                </p>
+                <div className="flex items-center space-x-2 text-amber-300">
+                  <Phone className="w-5 h-5" />
+                  <span className="font-semibold">Zadzwoń i sprawdź dostępność</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 px-4 bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              Najczęściej Zadawane Pytania
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, idx) => (
+              <div key={idx} className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-white/10 overflow-hidden">
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
+                  className="w-full px-6 py-5 flex items-center justify-between hover:bg-white/5 transition"
+                >
+                  <span className="font-semibold text-left">{faq.q}</span>
+                  {expandedFaq === idx ? (
+                    <Minus className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                  ) : (
+                    <Plus className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                  )}
+                </button>
+                {expandedFaq === idx && (
+                  <div className="px-6 pb-5 text-gray-400">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="kontakt" className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              Rozpocznij Swój Projekt Już Dziś
+            </h2>
+            <p className="text-xl text-gray-400">
+              Odpowiadamy w ciągu 2 godzin w dni robocze
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold mb-2">Imię i Nazwisko</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleFormChange}
+                  required
+                  className="w-full px-4 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg focus:border-amber-500 focus:outline-none transition"
+                  placeholder="Jan Kowalski"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleFormChange}
+                  required
+                  className="w-full px-4 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg focus:border-amber-500 focus:outline-none transition"
+                  placeholder="jan@example.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Telefon</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleFormChange}
+                  required
+                  className="w-full px-4 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg focus:border-amber-500 focus:outline-none transition"
+                  placeholder="+48 123 456 789"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Typ projektu</label>
+                <select
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleFormChange}
+                  required
+                  className="w-full px-4 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg focus:border-amber-500 focus:outline-none transition text-white"
+                >
+                  <option value="">Wybierz typ projektu</option>
+                  <option value="mieszkalny">Mieszkalny</option>
+                  <option value="przemyslowy">Przemysłowy</option>
+                  <option value="komercyjny">Komercyjny</option>
+                  <option value="inny">Inny</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Powierzchnia (m²)</label>
+                <input
+                  type="number"
+                  name="surface"
+                  value={formData.surface}
+                  onChange={handleFormChange}
+                  required
+                  className="w-full px-4 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg focus:border-amber-500 focus:outline-none transition"
+                  placeholder="100"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Opisz swój projekt</label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleFormChange}
+                  required
+                  rows="4"
+                  className="w-full px-4 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg focus:border-amber-500 focus:outline-none transition resize-none"
+                  placeholder="Proszę opisać szczegóły projektu..."
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 rounded-lg font-semibold text-lg shadow-lg shadow-amber-500/50 hover:shadow-amber-500/70 hover:scale-105 transition-all duration-300"
+              >
+                Wyślij Zapytanie o Wycenę
+              </button>
             </form>
 
-            <!-- Kluczowe Dane Kontaktowe -->
-            <div class="flex justify-center flex-wrap gap-8 mt-12 text-center">
-                <div class="flex items-center space-x-3">
-                    <i data-lucide="phone" class="w-6 h-6 text-yellow-500" style="filter: drop-shadow(0 0 4px #ffd700);"></i>
-                    <a href="tel:+48518128618" class="text-lg text-white hover:text-yellow-500 transition">+48 518 128 618</a>
+            <div className="space-y-8">
+              <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-amber-500/20">
+                <h3 className="text-2xl font-bold mb-6 text-amber-400">Dane Kontaktowe</h3>
+                <div className="space-y-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-amber-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <div className="font-semibold mb-1">Adres</div>
+                      <div className="text-gray-400">38-500 Sanok<br />Podkarpacie, Polska</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-amber-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <div className="font-semibold mb-1">Telefon</div>
+                      <a href="tel:+48518128618" className="text-amber-400 hover:text-amber-300">
+                        +48 518 128 618
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-amber-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <div className="font-semibold mb-1">Email</div>
+                      <a href="mailto:epoxyprosanok@gmail.com" className="text-amber-400 hover:text-amber-300">
+                        epoxyprosanok@gmail.com
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-amber-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <div className="font-semibold mb-1">Godziny pracy</div>
+                      <div className="text-gray-400">
+                        Pon-Pt: 7:00-17:00<br />
+                        Sob: 8:00-14:00
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center space-x-3">
-                    <i data-lucide="mail" class="w-6 h-6 text-yellow-500" style="filter: drop-shadow(0 0 4px #ffd700);"></i>
-                    <a href="mailto:epoxyprosanok@gmail.com" class="text-lg text-white hover:text-yellow-500 transition">epoxyprosanok@gmail.com</a>
+              </div>
+
+              <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-8 shadow-2xl">
+                <h3 className="text-2xl font-bold mb-4">Bezpłatna Konsultacja</h3>
+                <p className="text-gray-200 mb-6">
+                  Umów się na bezpłatną wizję lokalną i otrzymaj profesjonalną analizę Twojego projektu z propozycją optymalnych rozwiązań.
+                </p>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-sm">Bez zobowiązań</span>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <!-- Stopka -->
-    <footer class="bg-black p-6 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto text-center text-sm text-gray-500">
-            &copy; 2025 EpoxyPRO | Wszelkie Prawa Zastrzeżone | <a href="#" class="hover:text-yellow-500">Polityka Prywatności</a>
+      {/* Footer */}
+      <footer className="bg-gray-900 border-t border-white/10 py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold">EP</span>
+                </div>
+                <span className="text-xl font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">EpoxyPRO</span>
+              </div>
+              <p className="text-gray-400 text-sm">
+                Profesjonalne posadzki żywiczne dla przemysłu i designu. Sanok i Podkarpacie.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-bold mb-4">Usługi</h4>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><a href="#" className="hover:text-amber-400 transition">Posadzki Epoksydowe</a></li>
+                <li><a href="#" className="hover:text-amber-400 transition">Posadzki Poliuretanowe</a></li>
+                <li><a href="#" className="hover:text-amber-400 transition">Posadzki Przemysłowe</a></li>
+                <li><a href="#" className="hover:text-amber-400 transition">Posadzki Dekoracyjne</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold mb-4">Obszar Działania</h4>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li>Sanok</li>
+                <li>Krosno</li>
+                <li>Bieszczady</li>
+                <li>Lesko</li>
+                <li>Rzeszów</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold mb-4">Kontakt</h4>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li>+48 518 128 618</li>
+                <li>epoxyprosanok@gmail.com</li>
+                <li>epoxypro.pl</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-white/10 pt-8 text-center text-gray-400 text-sm">
+            <p>© 2025 EpoxyPRO. Wszelkie prawa zastrzeżone.</p>
+          </div>
         </div>
-    </footer>
+      </footer>
+    </div>
+  );
+};
 
-    <script>
-        // Funkcja inicjalizująca ikony Lucide
-        lucide.createIcons();
-
-        // Skrypt do filtrowania Portfolio (Masonry)
-        document.addEventListener('DOMContentLoaded', () => {
-            const filters = document.querySelectorAll('.filter-button');
-            const items = document.querySelectorAll('.portfolio-item');
-            const portfolioGrid = document.getElementById('portfolio-grid');
-
-            filters.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Usuń aktywne klasy i ustaw nową
-                    filters.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-
-                    const filter = button.getAttribute('data-filter');
-
-                    // Pokaż/Ukryj elementy z płynnym efektem (proste ukrywanie dla demo)
-                    items.forEach(item => {
-                        item.style.display = 'none';
-                        item.classList.remove('md:col-span-2'); // Reset szerokości
-
-                        if (filter === 'all' || item.classList.contains(filter)) {
-                            item.style.display = 'block';
-
-                            // Dodanie nieregularności siatki dla lepszej estetyki Masonry
-                            if (window.innerWidth >= 768 && Math.random() > 0.7) {
-                                // Losowe ustawienie niektórych elementów na 2 kolumny (tylko na większych ekranach)
-                                item.classList.add('md:col-span-2');
-                            }
-                        }
-                    });
-                });
-            });
-
-            // Uruchomienie początkowego filtrowania
-            document.querySelector('.filter-button[data-filter="all"]').click();
-
-
-            // Dodanie efektu Paralaksa na sekcji Hero
-            const heroBackground = document.getElementById('hero-background');
-
-            function handleScroll() {
-                // Prosty efekt paralaksy dla tła
-                const scrollY = window.scrollY;
-                const offset = scrollY * 0.3;
-
-                // Przesunięcie tła w górę, co daje efekt paralaksy
-                heroBackground.style.transform = `translateY(-${offset}px) scale(1.05)`;
-            }
-
-            window.addEventListener('scroll', handleScroll);
-        });
-    </script>
-</body>
-</html>
+export default EpoxyProLanding;
